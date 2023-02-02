@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 classifiers = [
   'Development Status :: 4 - Beta',
@@ -20,7 +20,7 @@ setup(name='littlefieldpy',
       classifiers=classifiers,
       author='Andrew Kahr',
       license='MIT',
-      packages=['littlefieldpy'],
+      packages=find_packages(),
       install_requires=[
           'requests',
       ],
