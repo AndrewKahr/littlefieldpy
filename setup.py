@@ -7,7 +7,7 @@ classifiers = [
   'Operating System :: Microsoft :: Windows',
   'Operating System :: MacOS',
   'Operating System :: POSIX :: Linux',
-  'License :: MIT License',
+  'License :: OSI Approved :: MIT License',
   'Programming Language :: Python :: 3'
 ]
 
