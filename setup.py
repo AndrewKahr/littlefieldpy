@@ -12,7 +12,7 @@ classifiers = [
 ]
 
 setup(name='littlefieldpy',
-      version='0.0.4',
+      version='0.0.5',
       description='API for the Littlefield simulation',
       long_description=open('README.md').read() + '\n\n',
       long_description_content_type='text/markdown',
