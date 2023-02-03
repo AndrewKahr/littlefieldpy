@@ -16,7 +16,7 @@ multi_points_regex = re.compile(r"""label: '([\d\w\s]+)', name: '([^']+)', point
 
 class Littlefield:
     def __init__(self, team_id='', password='', institution='', base_url='https://op.responsive.net/Littlefield/'):
-        self.session_id = None
+        self.session = requests.Session()
         if team_id == '' or password == '' or institution == '':
             self.team_id, self.password, self.institution = Littlefield._get_credentials_from_environment()
         else:
@@ -30,7 +30,7 @@ class Littlefield:
         # Ensure URL ends with /
         self.base_url = base_url.rstrip('/') + '/'
 
-        self.update_session_id()
+        self.update_session_login()
 
         self.orders = Orders(self)
         self.materials = Materials(self)
@@ -49,28 +49,17 @@ class Littlefield:
         institution = os.getenv('LITTLEFIELD_INSTITUTION', '')
         return tid, pw, institution
 
-    def update_session_id(self):
-        self.session_id = self._get_session_id()
-
-    def _get_session_id(self):
-        headers = {'User-Agent': ''}
+    def update_session_login(self):
+        self.session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'})
         payload = {'institution': self.institution, 'ismobile': 'false', 'id': self.team_id, 'password': self.password}
-        r = requests.post(self.base_url + Paths.LOGIN.value, headers=headers, data=payload)
-        cookie = r.headers.get('Set-Cookie')
-        m = session_id_regex.search(cookie)
-        if m is None:
-            raise RuntimeError(r.text)
-
-        return m.group(1)
+        self.session.post(self.base_url + Paths.LOGIN.value, data=payload)
 
     def get(self, path, params=None):
-        cookie = {'JSESSIONID': self.session_id}
-        r = requests.get(self.base_url + path, cookies=cookie, params=params)
+        r = self.session.get(self.base_url + path, params=params)
         return r.text
 
     def set(self, path, data):
-        cookie = {'JSESSIONID': self.session_id}
-        r = requests.post(self.base_url + path, cookies=cookie, data=data)
+        r = self.session.post(self.base_url + path, data=data)
         return r.text
 
     def get_data_multi(self, data, x='all'):
@@ -80,7 +69,7 @@ class Littlefield:
         raw = self.get('Plot?data={}&x={}'.format(data, x))
         matches = multi_points_regex.findall(raw)
         if matches is None:
-            self.update_session_id()
+            self.update_session_login()
             raw = self.get('Plot?data={}&x={}'.format(data, x))
             matches = multi_points_regex.findall(raw)
             if matches is None:
@@ -96,7 +85,7 @@ class Littlefield:
         raw = self.get('Plot?data={}&x={}'.format(data, x))
         m = points_regex.search(raw)
         if m is None:
-            self.update_session_id()
+            self.update_session_login()
             raw = self.get('Plot?data={}&x={}'.format(data, x))
             m = points_regex.search(raw)
             if m is None:

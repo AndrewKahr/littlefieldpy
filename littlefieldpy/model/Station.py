@@ -33,7 +33,7 @@ class Station:
         raw = self.lf.get('StationMenu?id={}'.format(self.station_id), params)
         m = station_info_regex.search(raw)
         if m is None:
-            self.lf.update_session_id()
+            self.lf.update_session_login()
             raw = self.lf.get('StationMenu?id={}'.format(self.station_id), params)
             m = station_info_regex.search(raw)
             if m is None:

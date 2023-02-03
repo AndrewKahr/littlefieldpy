@@ -45,7 +45,7 @@ class Orders:
         raw = self.lf.get('OrdersMenu', params)
         m = orders_info_regex.search(raw)
         if m is None:
-            self.lf.update_session_id()
+            self.lf.update_session_login()
             raw = self.lf.get('OrdersMenu', params)
             m = orders_info_regex.search(raw)
             if m is None:

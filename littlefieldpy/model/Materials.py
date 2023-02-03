@@ -44,7 +44,7 @@ class Materials:
         raw = self.lf.get('MaterialMenu', params)
         m = materials_info_regex.search(raw)
         if m is None:
-            self.lf.update_session_id()
+            self.lf.update_session_login()
             raw = self.lf.get('MaterialMenu', params)
             m = materials_info_regex.search(raw)
             if m is None:
