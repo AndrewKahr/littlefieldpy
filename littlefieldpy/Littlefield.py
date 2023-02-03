@@ -15,9 +15,9 @@ multi_points_regex = re.compile(r"""label: '([\d\w\s]+)', name: '([^']+)', point
 
 
 class Littlefield:
-    def __init__(self, institution, team_id='', password='', base_url='https://op.responsive.net/Littlefield/'):
+    def __init__(self, team_id='', password='', institution='', base_url='https://op.responsive.net/Littlefield/'):
         self.session_id = None
-        if team_id == '' or password == '':
+        if team_id == '' or password == '' or institution == '':
             self.team_id, self.password, self.institution = Littlefield._get_credentials_from_environment()
         else:
             self.team_id = team_id
