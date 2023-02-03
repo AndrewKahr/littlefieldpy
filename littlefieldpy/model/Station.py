@@ -1,8 +1,8 @@
 import re
 from collections import namedtuple
 
-station_info_regex = re.compile(r'''<P><B> Number of Machines: </B>(\d+)<BR>
-<B>Scheduling Policy: </B>(\w+)<BR>
+station_info_regex = re.compile(r'''<P><B> Number of Machines: <\/B>(\d+)<BR>
+<B>Scheduling Policy: </B>([\w\s]+)<BR>
 <B>Purchase Price: </B>\$\s*([\d,]+\.\d{2})<BR>
 <B>Retirement Price: </B>\$\s*([\d,]+\.\d{2})<BR>''')
 
